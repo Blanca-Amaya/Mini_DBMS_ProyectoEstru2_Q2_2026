@@ -5,6 +5,7 @@
 package mini_dbms_proyectoestru2_q2_2026;
 
 import java.io.File;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -32,8 +33,20 @@ public class Interfaz extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        JDialog_CrearCampos = new javax.swing.JDialog();
+        JPanel_CrearCampos = new javax.swing.JPanel();
+        JLabel_CrearCampos = new javax.swing.JLabel();
+        JLabel_NombreCampos = new javax.swing.JLabel();
+        JTextField_NombreDelCampo = new javax.swing.JTextField();
+        JLabel_TipoDeCampo = new javax.swing.JLabel();
+        JTextField_TipoDeCampo = new javax.swing.JTextField();
+        JLabel_LlavePrimSecun = new javax.swing.JLabel();
+        JCheckBox_LlaveSecundaria = new javax.swing.JCheckBox();
+        JCheckBox_LlavePrimaria = new javax.swing.JCheckBox();
+        JLabel_TamanioCampo = new javax.swing.JLabel();
+        JTextField_TamanioCampo = new javax.swing.JTextField();
+        JButton_CrearCampos = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
-        JLabel_Fondo = new javax.swing.JLabel();
         JMenuBar_1 = new javax.swing.JMenuBar();
         JMenu_Archivo = new javax.swing.JMenu();
         JMenuItem_CrearArchivo = new javax.swing.JMenuItem();
@@ -55,19 +68,119 @@ public class Interfaz extends javax.swing.JFrame {
         JMenuItem_CargarRegistrosPrueba = new javax.swing.JMenuItem();
         JMenuItem_CruzarArchivos = new javax.swing.JMenuItem();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        JLabel_CrearCampos.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        JLabel_CrearCampos.setText("Crear Campos");
 
-        JLabel_Fondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/FondoMaritimo.jpg"))); // NOI18N
+        JLabel_NombreCampos.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        JLabel_NombreCampos.setText("Nombre del campo:");
+
+        JLabel_TipoDeCampo.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        JLabel_TipoDeCampo.setText("Tipo de dato del campo:");
+
+        JLabel_LlavePrimSecun.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        JLabel_LlavePrimSecun.setText("Llave primaria/Llave secundaria:");
+        JLabel_LlavePrimSecun.setToolTipText("En caso no aplique a ninguna de las dos, no seleccionar");
+
+        JCheckBox_LlaveSecundaria.setText("Llave primaria");
+        JCheckBox_LlaveSecundaria.addActionListener(this::JCheckBox_LlaveSecundariaActionPerformed);
+
+        JCheckBox_LlavePrimaria.setText("Llave secundaria");
+
+        JLabel_TamanioCampo.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        JLabel_TamanioCampo.setText("Tamaño del campo:");
+
+        JButton_CrearCampos.setText("Crear campo");
+
+        javax.swing.GroupLayout JPanel_CrearCamposLayout = new javax.swing.GroupLayout(JPanel_CrearCampos);
+        JPanel_CrearCampos.setLayout(JPanel_CrearCamposLayout);
+        JPanel_CrearCamposLayout.setHorizontalGroup(
+            JPanel_CrearCamposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(JPanel_CrearCamposLayout.createSequentialGroup()
+                .addGroup(JPanel_CrearCamposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(JPanel_CrearCamposLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(JLabel_TamanioCampo, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(JTextField_TamanioCampo, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, JPanel_CrearCamposLayout.createSequentialGroup()
+                        .addGap(153, 153, 153)
+                        .addComponent(JLabel_CrearCampos)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, JPanel_CrearCamposLayout.createSequentialGroup()
+                        .addGap(41, 41, 41)
+                        .addGroup(JPanel_CrearCamposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(JPanel_CrearCamposLayout.createSequentialGroup()
+                                .addComponent(JLabel_TipoDeCampo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(JTextField_TipoDeCampo, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(JPanel_CrearCamposLayout.createSequentialGroup()
+                                .addGroup(JPanel_CrearCamposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(JLabel_LlavePrimSecun)
+                                    .addGroup(JPanel_CrearCamposLayout.createSequentialGroup()
+                                        .addComponent(JLabel_NombreCampos, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(JTextField_NombreDelCampo, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(JPanel_CrearCamposLayout.createSequentialGroup()
+                                        .addComponent(JCheckBox_LlavePrimaria)
+                                        .addGap(106, 106, 106)
+                                        .addComponent(JCheckBox_LlaveSecundaria, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(0, 1, Short.MAX_VALUE)))))
+                .addContainerGap(40, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JPanel_CrearCamposLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(JButton_CrearCampos)
+                .addContainerGap())
+        );
+        JPanel_CrearCamposLayout.setVerticalGroup(
+            JPanel_CrearCamposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(JPanel_CrearCamposLayout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addComponent(JLabel_CrearCampos)
+                .addGap(37, 37, 37)
+                .addGroup(JPanel_CrearCamposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(JLabel_NombreCampos)
+                    .addComponent(JTextField_NombreDelCampo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(JPanel_CrearCamposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(JLabel_TipoDeCampo)
+                    .addComponent(JTextField_TipoDeCampo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(JPanel_CrearCamposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(JLabel_TamanioCampo)
+                    .addComponent(JTextField_TamanioCampo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(JLabel_LlavePrimSecun, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(JPanel_CrearCamposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(JCheckBox_LlavePrimaria)
+                    .addComponent(JCheckBox_LlaveSecundaria))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
+                .addComponent(JButton_CrearCampos)
+                .addContainerGap())
+        );
+
+        javax.swing.GroupLayout JDialog_CrearCamposLayout = new javax.swing.GroupLayout(JDialog_CrearCampos.getContentPane());
+        JDialog_CrearCampos.getContentPane().setLayout(JDialog_CrearCamposLayout);
+        JDialog_CrearCamposLayout.setHorizontalGroup(
+            JDialog_CrearCamposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(JPanel_CrearCampos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        JDialog_CrearCamposLayout.setVerticalGroup(
+            JDialog_CrearCamposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(JPanel_CrearCampos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(JLabel_Fondo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGap(0, 721, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(JLabel_Fondo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGap(0, 451, Short.MAX_VALUE)
         );
 
         JMenu_Archivo.setText("Archivos");
@@ -99,6 +212,12 @@ public class Interfaz extends javax.swing.JFrame {
         JMenu_Campos.setText("Campos");
 
         JMenuItem_CrearCampos.setText("Crear campos");
+        JMenuItem_CrearCampos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                JMenuItem_CrearCamposMouseClicked(evt);
+            }
+        });
+        JMenuItem_CrearCampos.addActionListener(this::JMenuItem_CrearCamposActionPerformed);
         JMenu_Campos.add(JMenuItem_CrearCampos);
 
         JMenuItem_ListarCampos.setText("Listar campos");
@@ -173,6 +292,22 @@ public class Interfaz extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_JMenuItem_AbrirArchivoActionPerformed
 
+    
+    private void JCheckBox_LlaveSecundariaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JCheckBox_LlaveSecundariaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_JCheckBox_LlaveSecundariaActionPerformed
+    
+    // No funciono con Mouse Click - JDialogs
+    private void JMenuItem_CrearCamposMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JMenuItem_CrearCamposMouseClicked
+        // vacio
+    }//GEN-LAST:event_JMenuItem_CrearCamposMouseClicked
+
+    // Abrir el JDialog_CrearCampos y cerrando el JFrame
+    private void JMenuItem_CrearCamposActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JMenuItem_CrearCamposActionPerformed
+        this.setVisible(false);
+        expandir(JDialog_CrearCampos);
+    }//GEN-LAST:event_JMenuItem_CrearCamposActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -197,9 +332,24 @@ public class Interfaz extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> new Interfaz().setVisible(true));
     }
+    
+    // para las JDialogs
+    public void expandir(JDialog ventana) {
+        ventana.pack();
+        ventana.setModal(true);
+        ventana.setVisible(true);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel JLabel_Fondo;
+    private javax.swing.JButton JButton_CrearCampos;
+    private javax.swing.JCheckBox JCheckBox_LlavePrimaria;
+    private javax.swing.JCheckBox JCheckBox_LlaveSecundaria;
+    private javax.swing.JDialog JDialog_CrearCampos;
+    private javax.swing.JLabel JLabel_CrearCampos;
+    private javax.swing.JLabel JLabel_LlavePrimSecun;
+    private javax.swing.JLabel JLabel_NombreCampos;
+    private javax.swing.JLabel JLabel_TamanioCampo;
+    private javax.swing.JLabel JLabel_TipoDeCampo;
     private javax.swing.JMenuBar JMenuBar_1;
     private javax.swing.JMenuItem JMenuItem_AbrirArchivo;
     private javax.swing.JMenuItem JMenuItem_BorrarCampos;
@@ -220,6 +370,10 @@ public class Interfaz extends javax.swing.JFrame {
     private javax.swing.JMenu JMenu_Archivo;
     private javax.swing.JMenu JMenu_Campos;
     private javax.swing.JMenu JMenu_Registros;
+    private javax.swing.JPanel JPanel_CrearCampos;
+    private javax.swing.JTextField JTextField_NombreDelCampo;
+    private javax.swing.JTextField JTextField_TamanioCampo;
+    private javax.swing.JTextField JTextField_TipoDeCampo;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }
