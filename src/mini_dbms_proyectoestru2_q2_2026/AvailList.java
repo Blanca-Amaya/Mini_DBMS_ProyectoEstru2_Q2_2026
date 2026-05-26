@@ -27,4 +27,6 @@ public class AvailList { // AvailList simple solo agrega los bloques sin un orde
         }
         return bloquesLibres;
     }
+    
+    
 }
