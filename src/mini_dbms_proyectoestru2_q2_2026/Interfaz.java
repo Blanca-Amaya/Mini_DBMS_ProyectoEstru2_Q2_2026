@@ -4,6 +4,10 @@
  */
 package mini_dbms_proyectoestru2_q2_2026;
 
+import java.io.File;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 /**
  *
  * @author bamay
@@ -78,6 +82,7 @@ public class Interfaz extends javax.swing.JFrame {
         JMenu_Archivo.add(JMenuItem_CrearArchivo);
 
         JMenuItem_AbrirArchivo.setText("Abrir archivo");
+        JMenuItem_AbrirArchivo.addActionListener(this::JMenuItem_AbrirArchivoActionPerformed);
         JMenu_Archivo.add(JMenuItem_AbrirArchivo);
 
         JMenuItem_GuardarCambios.setText("Guardar cambios");
@@ -155,6 +160,18 @@ public class Interfaz extends javax.swing.JFrame {
     private void JMenuItem_CrearArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JMenuItem_CrearArchivoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_JMenuItem_CrearArchivoActionPerformed
+
+    private void JMenuItem_AbrirArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JMenuItem_AbrirArchivoActionPerformed
+        JFileChooser fileChooser = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivo de texto (*.txt)", "txt");
+        fileChooser.setFileFilter(filter);
+        int estado = fileChooser.showOpenDialog(this);
+        
+        if (estado == JFileChooser.APPROVE_OPTION) {
+            File archivoSeleccionado = fileChooser.getSelectedFile();
+            
+        }
+    }//GEN-LAST:event_JMenuItem_AbrirArchivoActionPerformed
 
     /**
      * @param args the command line arguments
