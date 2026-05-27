@@ -8,6 +8,8 @@ package mini_dbms_proyectoestru2_q2_2026;
  *
  * @author bamay
  */
+
+// para generar los 10,000 min registros en 1 archivo - prueba
 public class GenerarArchivoPrueba {
     
 }

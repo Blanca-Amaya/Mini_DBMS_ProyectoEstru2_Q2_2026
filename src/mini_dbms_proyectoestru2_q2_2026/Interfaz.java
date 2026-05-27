@@ -5,7 +5,9 @@
 package mini_dbms_proyectoestru2_q2_2026;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import javax.swing.JDialog;
@@ -20,7 +22,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class Interfaz extends javax.swing.JFrame {
     
     private ArrayList<Campos> lista_Campos; // Una lista que se va guardar todos los campos que se vayan a estar creando - temporalmente
-    //private ArrayList<Registro> lista_Registros; // lista temporal que guarda todos los archivs
+    //private ArrayList<Registro> lista_Registros; // lista temporal que guarda todos los archivs -- despues de terminar campos continuar registro
+    private File archivoActual;
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Interfaz.class.getName());
 
@@ -38,6 +41,8 @@ public class Interfaz extends javax.swing.JFrame {
         JComboBox_TipoDeDatoCampo.addItem("boolean"); // 2 = bool
         JComboBox_TipoDeDatoCampo.addItem("char"); // 3 = char
         JComboBox_TipoDeDatoCampo.addItem("string"); // 4 =string
+        
+        archivoActual = null;  // inicial no hay archivo
     }
 
     /**
@@ -72,6 +77,7 @@ public class Interfaz extends javax.swing.JFrame {
         JButton_BorrarCampos = new javax.swing.JButton();
         JButton_SalirListaCampos = new javax.swing.JButton();
         JPanel_JFrame = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
         JMenuBar_1 = new javax.swing.JMenuBar();
         JMenu_Archivo = new javax.swing.JMenu();
         JMenuItem_CrearArchivo = new javax.swing.JMenuItem();
@@ -292,15 +298,17 @@ public class Interfaz extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/FondoMaritimo.jpg"))); // NOI18N
+
         javax.swing.GroupLayout JPanel_JFrameLayout = new javax.swing.GroupLayout(JPanel_JFrame);
         JPanel_JFrame.setLayout(JPanel_JFrameLayout);
         JPanel_JFrameLayout.setHorizontalGroup(
             JPanel_JFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 721, Short.MAX_VALUE)
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         JPanel_JFrameLayout.setVerticalGroup(
             JPanel_JFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 451, Short.MAX_VALUE)
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         JMenu_Archivo.setText("Archivos");
@@ -320,12 +328,15 @@ public class Interfaz extends javax.swing.JFrame {
         JMenu_Archivo.add(JMenuItem_AbrirArchivo);
 
         JMenuItem_GuardarCambios.setText("Guardar cambios");
+        JMenuItem_GuardarCambios.addActionListener(this::JMenuItem_GuardarCambiosActionPerformed);
         JMenu_Archivo.add(JMenuItem_GuardarCambios);
 
         JMenuItem_CerrarArchivo.setText("Cerrar archivo");
+        JMenuItem_CerrarArchivo.addActionListener(this::JMenuItem_CerrarArchivoActionPerformed);
         JMenu_Archivo.add(JMenuItem_CerrarArchivo);
 
         JMenuItem_SalirProg.setText("Salir");
+        JMenuItem_SalirProg.addActionListener(this::JMenuItem_SalirProgActionPerformed);
         JMenu_Archivo.add(JMenuItem_SalirProg);
 
         JMenuBar_1.add(JMenu_Archivo);
@@ -555,10 +566,66 @@ public class Interfaz extends javax.swing.JFrame {
         JDialog_ListarCampos.dispose();
     }//GEN-LAST:event_JButton_SalirListaCamposMouseClicked
 
-    // Salir del JFrame (salir del programa en corto
+    
     private void JMenu_ArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JMenu_ArchivoActionPerformed
         
     }//GEN-LAST:event_JMenu_ArchivoActionPerformed
+
+    // Salir del JFrame (salir del programa en corto
+    private void JMenuItem_SalirProgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JMenuItem_SalirProgActionPerformed
+        if (!lista_Campos.isEmpty()){ // ******Despues validar para registros tambien
+            int resp = JOptionPane.showConfirmDialog(this, "Desea guardar los cambios realizados?","Guardar cambios" ,JOptionPane.YES_NO_CANCEL_OPTION);
+            if (resp == JOptionPane.YES_OPTION) {
+                // guardar antes de cerrar 
+                // todavia no implementado el guardar
+                System.exit(0);
+            } else if (resp == JOptionPane.NO_OPTION) {
+                System.exit(0);
+            } else { 
+                System.exit(0);
+            }
+        }
+    }//GEN-LAST:event_JMenuItem_SalirProgActionPerformed
+
+    // Guardar los cambios hechos - archivo
+    private void JMenuItem_GuardarCambiosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JMenuItem_GuardarCambiosActionPerformed
+        // verificar si hay archivo abierto
+        if (archivoActual == null) {
+            JOptionPane.showMessageDialog(this, "No hay archivo");
+        }
+        
+        // guardar si hay campos - verificar si hay 
+        if (lista_Campos.isEmpty()) {
+            JOptionPane.showConfirmDialog(this, "No hay campos por guardar");
+        }
+        
+    }//GEN-LAST:event_JMenuItem_GuardarCambiosActionPerformed
+
+    // Cerrar el archivo 
+    private void JMenuItem_CerrarArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JMenuItem_CerrarArchivoActionPerformed
+        if (archivoActual == null) { // ver si hay un archivo abierto
+            JOptionPane.showMessageDialog(this, "No hay ningún archivo abierto");
+            return;
+        } 
+        
+        // verificando si hay cambios que requieran guardar
+        if (!lista_Campos.isEmpty()) {
+            int resp = JOptionPane.showConfirmDialog(this, "Hay cambios sin guardar, desea guardarlos antes de cerrar?", "Guardar cambios", JOptionPane.YES_NO_CANCEL_OPTION);
+            if (resp == JOptionPane.YES_OPTION) {
+                if (archivoActual != null) {
+                    // guardar campos - hacer un metodo para reutilizarlo en guardar archivo
+                } else {
+                    
+                }
+            } else if (resp == JOptionPane.CANCEL_OPTION){
+                return;
+            }
+        }
+        // limpieza de variables 
+        archivoActual = null;
+        lista_Campos.clear();
+        JOptionPane.showMessageDialog(this, "Archivo cerrado");
+    }//GEN-LAST:event_JMenuItem_CerrarArchivoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -634,6 +701,7 @@ public class Interfaz extends javax.swing.JFrame {
     private javax.swing.JTable JTable_ListaDeCampos;
     private javax.swing.JTextField JTextField_NombreDelCampo;
     private javax.swing.JTextField JTextField_TamanioCampo;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
