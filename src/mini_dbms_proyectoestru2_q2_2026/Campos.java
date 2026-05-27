@@ -10,12 +10,18 @@ package mini_dbms_proyectoestru2_q2_2026;
  */
 public class Campos { // para
     private String nombre;
-    private String tipoDato;
+    private int tipoDato;
     private String tamanio;
     private boolean llavePrimaria;
     private boolean llaveSecundaria;
-
-    public Campos(String nombre, String tipoDato, String tamanio, boolean llavePrimaria, boolean llaveSecundaria) {
+    
+    // Constructor vacio
+    public Campos() {
+    
+    }
+    
+    
+    public Campos(String nombre, int tipoDato, String tamanio, boolean llavePrimaria, boolean llaveSecundaria) {
         this.nombre = nombre;
         this.tipoDato = tipoDato;
         this.tamanio = tamanio;
@@ -27,7 +33,7 @@ public class Campos { // para
         return nombre;
     }
 
-    public String getTipoDato() {
+    public int getTipoDato() {
         return tipoDato;
     }
 
@@ -47,7 +53,7 @@ public class Campos { // para
         this.nombre = nombre;
     }
 
-    public void setTipoDato(String tipoDato) {
+    public void setTipoDato(int tipoDato) {
         this.tipoDato = tipoDato;
     }
 

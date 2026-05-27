@@ -5,8 +5,10 @@
 package mini_dbms_proyectoestru2_q2_2026;
 
 import java.io.File;
+import java.util.ArrayList;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
@@ -15,6 +17,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  */
 public class Interfaz extends javax.swing.JFrame {
     
+    private ArrayList<Campos> lista_Campos; // Una lista que se va guardar todos los campos que se vayan a estar creando - temporalmente
+    
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Interfaz.class.getName());
 
     /**
@@ -22,6 +26,7 @@ public class Interfaz extends javax.swing.JFrame {
      */
     public Interfaz() {
         initComponents();
+        lista_Campos = new ArrayList<>(); // lista de campos inicializada y vacia
     }
 
     /**
@@ -39,14 +44,23 @@ public class Interfaz extends javax.swing.JFrame {
         JLabel_NombreCampos = new javax.swing.JLabel();
         JTextField_NombreDelCampo = new javax.swing.JTextField();
         JLabel_TipoDeCampo = new javax.swing.JLabel();
-        JTextField_TipoDeCampo = new javax.swing.JTextField();
         JLabel_LlavePrimSecun = new javax.swing.JLabel();
-        JCheckBox_LlaveSecundaria = new javax.swing.JCheckBox();
-        JCheckBox_LlavePrimaria = new javax.swing.JCheckBox();
         JLabel_TamanioCampo = new javax.swing.JLabel();
         JTextField_TamanioCampo = new javax.swing.JTextField();
         JButton_CrearCampos = new javax.swing.JButton();
-        jPanel1 = new javax.swing.JPanel();
+        JButton_SalirCrearCampos = new javax.swing.JButton();
+        JRadioButton_LlavePrimaria = new javax.swing.JRadioButton();
+        JRadioButton_LlaveSecundaria = new javax.swing.JRadioButton();
+        JComboBox_TipoDeDatoCampo = new javax.swing.JComboBox<>();
+        JDialog_ListarCampos = new javax.swing.JDialog();
+        jPanel2 = new javax.swing.JPanel();
+        JLabel_CrearCampos1 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        JTable_ListaDeCampos = new javax.swing.JTable();
+        JButton_ModificarCampos = new javax.swing.JButton();
+        JButton_BorrarCampos = new javax.swing.JButton();
+        JButton_SalirListaCampos = new javax.swing.JButton();
+        JPanel_JFrame = new javax.swing.JPanel();
         JMenuBar_1 = new javax.swing.JMenuBar();
         JMenu_Archivo = new javax.swing.JMenu();
         JMenuItem_CrearArchivo = new javax.swing.JMenuItem();
@@ -81,15 +95,31 @@ public class Interfaz extends javax.swing.JFrame {
         JLabel_LlavePrimSecun.setText("Llave primaria/Llave secundaria:");
         JLabel_LlavePrimSecun.setToolTipText("En caso no aplique a ninguna de las dos, no seleccionar");
 
-        JCheckBox_LlaveSecundaria.setText("Llave primaria");
-        JCheckBox_LlaveSecundaria.addActionListener(this::JCheckBox_LlaveSecundariaActionPerformed);
-
-        JCheckBox_LlavePrimaria.setText("Llave secundaria");
-
         JLabel_TamanioCampo.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         JLabel_TamanioCampo.setText("Tamaño del campo:");
 
         JButton_CrearCampos.setText("Crear campo");
+        JButton_CrearCampos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                JButton_CrearCamposMouseClicked(evt);
+            }
+        });
+
+        JButton_SalirCrearCampos.setBackground(new java.awt.Color(204, 0, 0));
+        JButton_SalirCrearCampos.setText("Salir");
+        JButton_SalirCrearCampos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                JButton_SalirCrearCamposMouseClicked(evt);
+            }
+        });
+
+        JRadioButton_LlavePrimaria.setText("Llave primaria");
+        JRadioButton_LlavePrimaria.setToolTipText("");
+
+        JRadioButton_LlaveSecundaria.setText("Llave secundaria");
+        JRadioButton_LlaveSecundaria.addActionListener(this::JRadioButton_LlaveSecundariaActionPerformed);
+
+        JComboBox_TipoDeDatoCampo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout JPanel_CrearCamposLayout = new javax.swing.GroupLayout(JPanel_CrearCampos);
         JPanel_CrearCampos.setLayout(JPanel_CrearCamposLayout);
@@ -112,7 +142,7 @@ public class Interfaz extends javax.swing.JFrame {
                             .addGroup(JPanel_CrearCamposLayout.createSequentialGroup()
                                 .addComponent(JLabel_TipoDeCampo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(JTextField_TipoDeCampo, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(JComboBox_TipoDeDatoCampo, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(JPanel_CrearCamposLayout.createSequentialGroup()
                                 .addGroup(JPanel_CrearCamposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(JLabel_LlavePrimSecun)
@@ -121,13 +151,15 @@ public class Interfaz extends javax.swing.JFrame {
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(JTextField_NombreDelCampo, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(JPanel_CrearCamposLayout.createSequentialGroup()
-                                        .addComponent(JCheckBox_LlavePrimaria)
-                                        .addGap(106, 106, 106)
-                                        .addComponent(JCheckBox_LlaveSecundaria, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addComponent(JRadioButton_LlavePrimaria, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(142, 142, 142)
+                                        .addComponent(JRadioButton_LlaveSecundaria, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGap(0, 1, Short.MAX_VALUE)))))
                 .addContainerGap(40, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JPanel_CrearCamposLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(JButton_SalirCrearCampos)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(JButton_CrearCampos)
                 .addContainerGap())
         );
@@ -140,10 +172,10 @@ public class Interfaz extends javax.swing.JFrame {
                 .addGroup(JPanel_CrearCamposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(JLabel_NombreCampos)
                     .addComponent(JTextField_NombreDelCampo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(JPanel_CrearCamposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGap(19, 19, 19)
+                .addGroup(JPanel_CrearCamposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(JLabel_TipoDeCampo)
-                    .addComponent(JTextField_TipoDeCampo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(JComboBox_TipoDeDatoCampo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(JPanel_CrearCamposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(JLabel_TamanioCampo)
@@ -152,10 +184,12 @@ public class Interfaz extends javax.swing.JFrame {
                 .addComponent(JLabel_LlavePrimSecun, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(JPanel_CrearCamposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(JCheckBox_LlavePrimaria)
-                    .addComponent(JCheckBox_LlaveSecundaria))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
-                .addComponent(JButton_CrearCampos)
+                    .addComponent(JRadioButton_LlavePrimaria)
+                    .addComponent(JRadioButton_LlaveSecundaria))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
+                .addGroup(JPanel_CrearCamposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(JButton_CrearCampos)
+                    .addComponent(JButton_SalirCrearCampos))
                 .addContainerGap())
         );
 
@@ -170,16 +204,91 @@ public class Interfaz extends javax.swing.JFrame {
             .addComponent(JPanel_CrearCampos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
+        JLabel_CrearCampos1.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        JLabel_CrearCampos1.setText("Lista de Campos");
+
+        JTable_ListaDeCampos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(JTable_ListaDeCampos);
+
+        JButton_ModificarCampos.setText("Modificar Campo");
+
+        JButton_BorrarCampos.setText("Borrar Campos");
+
+        JButton_SalirListaCampos.setBackground(new java.awt.Color(204, 0, 0));
+        JButton_SalirListaCampos.setText("Salir");
+        JButton_SalirListaCampos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                JButton_SalirListaCamposMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(206, 206, 206)
+                        .addComponent(JLabel_CrearCampos1))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(JButton_ModificarCampos)
+                                .addGap(18, 18, 18)
+                                .addComponent(JButton_BorrarCampos)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(JButton_SalirListaCampos))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 626, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(28, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addComponent(JLabel_CrearCampos1)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(JButton_ModificarCampos)
+                    .addComponent(JButton_BorrarCampos)
+                    .addComponent(JButton_SalirListaCampos))
+                .addContainerGap(17, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout JDialog_ListarCamposLayout = new javax.swing.GroupLayout(JDialog_ListarCampos.getContentPane());
+        JDialog_ListarCampos.getContentPane().setLayout(JDialog_ListarCamposLayout);
+        JDialog_ListarCamposLayout.setHorizontalGroup(
+            JDialog_ListarCamposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        JDialog_ListarCamposLayout.setVerticalGroup(
+            JDialog_ListarCamposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout JPanel_JFrameLayout = new javax.swing.GroupLayout(JPanel_JFrame);
+        JPanel_JFrame.setLayout(JPanel_JFrameLayout);
+        JPanel_JFrameLayout.setHorizontalGroup(
+            JPanel_JFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 721, Short.MAX_VALUE)
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        JPanel_JFrameLayout.setVerticalGroup(
+            JPanel_JFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 451, Short.MAX_VALUE)
         );
 
@@ -262,11 +371,11 @@ public class Interfaz extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(JPanel_JFrame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(JPanel_JFrame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -292,11 +401,7 @@ public class Interfaz extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_JMenuItem_AbrirArchivoActionPerformed
 
-    
-    private void JCheckBox_LlaveSecundariaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JCheckBox_LlaveSecundariaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_JCheckBox_LlaveSecundariaActionPerformed
-    
+        
     // No funciono con Mouse Click - JDialogs
     private void JMenuItem_CrearCamposMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JMenuItem_CrearCamposMouseClicked
         // vacio
@@ -307,6 +412,102 @@ public class Interfaz extends javax.swing.JFrame {
         this.setVisible(false);
         expandir(JDialog_CrearCampos);
     }//GEN-LAST:event_JMenuItem_CrearCamposActionPerformed
+
+    // Crear los campos una vez ya haya ingresado los datos requeridos
+    private void JButton_CrearCamposMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JButton_CrearCamposMouseClicked
+        Campos temporal = new Campos();
+        
+        // Verificar que los campos no esten vacios
+        // 1. Verificando que el TextField del campo no este vacio 
+        if (JTextField_NombreDelCampo.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(JDialog_CrearCampos, "Ingrese el campo requerido (Nombre del campo)");
+            return;
+        }
+        
+        // 2. Guardar el nombre del campo en temporal con setNombre
+        temporal.setNombre(JTextField_NombreDelCampo.getText());
+        
+        // 3. Verificar el ComboBox de que tipo de dato va ser el campo
+        // Como es int private int tipoDato; entonces => 0 = int, 1 = float, 2 = bool, 3 = char, 4 = string
+        int tipo_Seleccionado = JComboBox_TipoDeDatoCampo.getSelectedIndex(); // indice del seleccionado
+        switch (tipo_Seleccionado){
+            case 0 : // int
+                temporal.setTipoDato(0);
+                temporal.setTamanio("4");
+                JTextField_TamanioCampo.setText("4");
+                JTextField_TamanioCampo.setEnabled(false); // para que no pueda cambiar el "4" 
+                break;
+            case 1: // float
+                temporal.setTipoDato(1);
+                temporal.setTamanio("8");
+                JTextField_TamanioCampo.setText("8");
+                JTextField_TamanioCampo.setEnabled(false); // mismo pero "8"
+                break;
+            case 2: // bool
+                temporal.setTipoDato(2);
+                temporal.setTamanio("1"); // true/false solo ocupa 1 byte de espacio
+                JTextField_TamanioCampo.setText("1");
+                JTextField_TamanioCampo.setEnabled(false);
+                break;
+            case 3: // char
+                if (JTextField_TamanioCampo.getText().isEmpty()) { // verificar que el tamanio no este vacio
+                    JOptionPane.showMessageDialog(JDialog_CrearCampos, "Ingrese el campo requerido (tamanio del char)");
+                    return;
+                }
+                temporal.setTipoDato(3);
+                temporal.setTamanio(JTextField_TamanioCampo.getText());
+                JTextField_TamanioCampo.setEnabled(true);
+                break;
+            case 4: // string
+                if (JTextField_TamanioCampo.getText().isEmpty()) { // verificar que el tamanio no este vacio
+                    JOptionPane.showMessageDialog(JDialog_CrearCampos, "Ingrese el campo requerido (tamanio del string)");
+                    return;
+                }
+                temporal.setTipoDato(4);
+                temporal.setTamanio(JTextField_TamanioCampo.getText());
+                JTextField_TamanioCampo.setEnabled(true);
+                break;
+        }
+        
+        // 4. Llaves primarias y secundarias asignadas - validando que solo pueda escoger 1 pero no ambos y si no se escoge ambos dejando como campo normal
+        if (JRadioButton_LlavePrimaria.isSelected()) {
+            temporal.setLlavePrimaria(true);
+            temporal.setLlaveSecundaria(false);
+        } else if (JRadioButton_LlaveSecundaria.isSelected()) {
+            temporal.setLlavePrimaria(false);
+            temporal.setLlaveSecundaria(true);
+        } else { // --> campo normal
+            temporal.setLlavePrimaria(false);
+            temporal.setLlaveSecundaria(false);
+        }
+        
+        // 5. Agregarla a la lista_campos - temporal
+        lista_Campos.add(temporal); // ya agregando el Campo temporal con todos lo requerido (nombre, tipodato, tamanio, llaveprimaria, llavesecundaria)
+        
+        // 6. mensaje que muestra que se realizo la creacion de campo
+        JOptionPane.showMessageDialog(JDialog_CrearCampos, "Campo '" + temporal.getNombre() + "' ha creado");
+        
+        // 7. limpiar los componentes
+        JTextField_NombreDelCampo.setText("");
+        JTextField_TamanioCampo.setText("");
+        
+    }//GEN-LAST:event_JButton_CrearCamposMouseClicked
+
+    private void JRadioButton_LlaveSecundariaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JRadioButton_LlaveSecundariaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_JRadioButton_LlaveSecundariaActionPerformed
+
+    // Cerrar el JDialog de crear campos y mostrar el JFrame
+    private void JButton_SalirCrearCamposMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JButton_SalirCrearCamposMouseClicked
+        this.setVisible(true);
+        JDialog_CrearCampos.dispose();
+    }//GEN-LAST:event_JButton_SalirCrearCamposMouseClicked
+
+    // Cerrar el JDialog de Listar campos y mostrar el JFrame
+    private void JButton_SalirListaCamposMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JButton_SalirListaCamposMouseClicked
+        this.setVisible(true);
+        JDialog_ListarCampos.dispose();
+    }//GEN-LAST:event_JButton_SalirListaCamposMouseClicked
 
     /**
      * @param args the command line arguments
@@ -341,11 +542,16 @@ public class Interfaz extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton JButton_BorrarCampos;
     private javax.swing.JButton JButton_CrearCampos;
-    private javax.swing.JCheckBox JCheckBox_LlavePrimaria;
-    private javax.swing.JCheckBox JCheckBox_LlaveSecundaria;
+    private javax.swing.JButton JButton_ModificarCampos;
+    private javax.swing.JButton JButton_SalirCrearCampos;
+    private javax.swing.JButton JButton_SalirListaCampos;
+    private javax.swing.JComboBox<String> JComboBox_TipoDeDatoCampo;
     private javax.swing.JDialog JDialog_CrearCampos;
+    private javax.swing.JDialog JDialog_ListarCampos;
     private javax.swing.JLabel JLabel_CrearCampos;
+    private javax.swing.JLabel JLabel_CrearCampos1;
     private javax.swing.JLabel JLabel_LlavePrimSecun;
     private javax.swing.JLabel JLabel_NombreCampos;
     private javax.swing.JLabel JLabel_TamanioCampo;
@@ -371,9 +577,13 @@ public class Interfaz extends javax.swing.JFrame {
     private javax.swing.JMenu JMenu_Campos;
     private javax.swing.JMenu JMenu_Registros;
     private javax.swing.JPanel JPanel_CrearCampos;
+    private javax.swing.JPanel JPanel_JFrame;
+    private javax.swing.JRadioButton JRadioButton_LlavePrimaria;
+    private javax.swing.JRadioButton JRadioButton_LlaveSecundaria;
+    private javax.swing.JTable JTable_ListaDeCampos;
     private javax.swing.JTextField JTextField_NombreDelCampo;
     private javax.swing.JTextField JTextField_TamanioCampo;
-    private javax.swing.JTextField JTextField_TipoDeCampo;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }
