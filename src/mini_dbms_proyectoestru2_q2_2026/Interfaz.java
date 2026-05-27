@@ -5,6 +5,8 @@
 package mini_dbms_proyectoestru2_q2_2026;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
@@ -18,6 +20,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class Interfaz extends javax.swing.JFrame {
     
     private ArrayList<Campos> lista_Campos; // Una lista que se va guardar todos los campos que se vayan a estar creando - temporalmente
+    //private ArrayList<Registro> lista_Registros; // lista temporal que guarda todos los archivs
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Interfaz.class.getName());
 
@@ -27,6 +30,14 @@ public class Interfaz extends javax.swing.JFrame {
     public Interfaz() {
         initComponents();
         lista_Campos = new ArrayList<>(); // lista de campos inicializada y vacia
+        
+        // cambiandole los items de opciones de la combobox
+        JComboBox_TipoDeDatoCampo.removeAllItems();
+        JComboBox_TipoDeDatoCampo.addItem("int"); // 0 = int
+        JComboBox_TipoDeDatoCampo.addItem("float"); // 1 = float
+        JComboBox_TipoDeDatoCampo.addItem("boolean"); // 2 = bool
+        JComboBox_TipoDeDatoCampo.addItem("char"); // 3 = char
+        JComboBox_TipoDeDatoCampo.addItem("string"); // 4 =string
     }
 
     /**
@@ -298,6 +309,7 @@ public class Interfaz extends javax.swing.JFrame {
                 JMenu_ArchivoMouseClicked(evt);
             }
         });
+        JMenu_Archivo.addActionListener(this::JMenu_ArchivoActionPerformed);
 
         JMenuItem_CrearArchivo.setText("Crear archivo");
         JMenuItem_CrearArchivo.addActionListener(this::JMenuItem_CrearArchivoActionPerformed);
@@ -386,7 +398,41 @@ public class Interfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_JMenu_ArchivoMouseClicked
 
     private void JMenuItem_CrearArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JMenuItem_CrearArchivoActionPerformed
-        // TODO add your handling code here:
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Guardar archivo como...");
+        
+        // Para que solo se muestre archivos .txt y tambien los archivos creados sean .txt
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivo de texto (*.txt)", "txt");
+        fileChooser.setFileFilter(filtro);
+        int seleccion = fileChooser.showSaveDialog(this);
+        
+        // solo para verificar que el usuario presiono guardar 
+        if (seleccion == JFileChooser.APPROVE_OPTION) {
+            File archivo_Seleccionado = fileChooser.getSelectedFile(); 
+            String ruta = archivo_Seleccionado.getAbsolutePath();
+            // verificar si termina en .txt
+            if (!ruta.toLowerCase().endsWith(".txt")) {
+                ruta+= ".txt";
+            }
+            File archivoFinal = new File(ruta);
+            
+            if (archivoFinal.exists()) { // si el archivo existe/ya existe
+                JOptionPane.showMessageDialog(this, "El archivo ya existe");
+                return;
+            }
+            
+            // crear el archivo
+            try {
+                try (RandomAccessFile archivo = new RandomAccessFile(archivoFinal, "rw")) {
+                    archivo.setLength(0); // archivo vacio (esta con 0 bytes)
+                }
+                JOptionPane.showMessageDialog(this, "El archivo se creo");
+            } catch (IOException e) { // en caso si hubo algun error
+                JOptionPane.showMessageDialog(this, "Hubo un error al crear archivo: " + e.getMessage());
+            }
+        } else { // en caso se decidio seleccionar "cancelar"
+            JOptionPane.showMessageDialog(this, "No se selecciono ningun archivo");
+        }
     }//GEN-LAST:event_JMenuItem_CrearArchivoActionPerformed
 
     private void JMenuItem_AbrirArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JMenuItem_AbrirArchivoActionPerformed
@@ -407,7 +453,7 @@ public class Interfaz extends javax.swing.JFrame {
         // vacio
     }//GEN-LAST:event_JMenuItem_CrearCamposMouseClicked
 
-    // Abrir el JDialog_CrearCampos y cerrando el JFrame
+    // Abre el JDialog_CrearCampos y cerrando el JFrame
     private void JMenuItem_CrearCamposActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JMenuItem_CrearCamposActionPerformed
         this.setVisible(false);
         expandir(JDialog_CrearCampos);
@@ -508,6 +554,11 @@ public class Interfaz extends javax.swing.JFrame {
         this.setVisible(true);
         JDialog_ListarCampos.dispose();
     }//GEN-LAST:event_JButton_SalirListaCamposMouseClicked
+
+    // Salir del JFrame (salir del programa en corto
+    private void JMenu_ArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JMenu_ArchivoActionPerformed
+        
+    }//GEN-LAST:event_JMenu_ArchivoActionPerformed
 
     /**
      * @param args the command line arguments
