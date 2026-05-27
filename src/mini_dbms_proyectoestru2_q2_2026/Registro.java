@@ -13,7 +13,7 @@ import java.util.ArrayList;
 // un registro del archivo (1 fila)
 public class Registro { 
     private ArrayList<Object> valores; // valores de los registros
-    private ArrayList<Campos> estructuraCampos; // Referencia a la estructura de campos
+    private ArrayList<DescriptorCampos> estructuraCampos; // Referencia a la estructura de campos
     private long posicionEnArchivo; // la direccion del archivo en el disco
 
     public Registro() {
@@ -22,7 +22,7 @@ public class Registro {
         this.posicionEnArchivo = -1;
     }
     
-    public Registro(ArrayList<Campos> estructuraCampos) {
+    public Registro(ArrayList<DescriptorCampos> estructuraCampos) {
         this.valores = new ArrayList<>();
         this.estructuraCampos = estructuraCampos;
         this.posicionEnArchivo = -1;
@@ -95,12 +95,12 @@ public class Registro {
     }
     
     // estru de campos
-    public ArrayList<Campos> getEstructuraCampos() {
+    public ArrayList<DescriptorCampos> getEstructuraCampos() {
         return estructuraCampos;
     }
     
     // cambios estru de campos
-    public void setEstructuraCampos(ArrayList<Campos> estructuraCampos) {
+    public void setEstructuraCampos(ArrayList<DescriptorCampos> estructuraCampos) {
         this.estructuraCampos = estructuraCampos;
     }
     
