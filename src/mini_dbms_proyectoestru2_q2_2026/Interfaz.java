@@ -33,6 +33,10 @@ public class Interfaz extends javax.swing.JFrame {
     public Interfaz() {
         initComponents();
         lista_Campos = new ArrayList<>(); // lista de campos inicializada y vacia
+        archivoActual        = null;
+        metadataActual       = null;
+        rafActual            = null;
+        haycambiosSinGuardar = false;
         
         // cambiandole los items de opciones de la combobox
         JComboBox_TipoDeDatoCampo.removeAllItems();
@@ -43,6 +47,7 @@ public class Interfaz extends javax.swing.JFrame {
         JComboBox_TipoDeDatoCampo.addItem("string"); // 4 =string
         
         archivoActual = null;  // inicial no hay archivo
+        this.setTitle("Mini DBMS — Sin archivo abierto");
     }
 
     /**
@@ -99,21 +104,30 @@ public class Interfaz extends javax.swing.JFrame {
         JMenuItem_CargarRegistrosPrueba = new javax.swing.JMenuItem();
         JMenuItem_CruzarArchivos = new javax.swing.JMenuItem();
 
+        JPanel_CrearCampos.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
         JLabel_CrearCampos.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         JLabel_CrearCampos.setText("Crear Campos");
+        JPanel_CrearCampos.add(JLabel_CrearCampos, new org.netbeans.lib.awtextra.AbsoluteConstraints(153, 24, -1, -1));
 
         JLabel_NombreCampos.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         JLabel_NombreCampos.setText("Nombre del campo:");
+        JPanel_CrearCampos.add(JLabel_NombreCampos, new org.netbeans.lib.awtextra.AbsoluteConstraints(41, 109, 234, -1));
+        JPanel_CrearCampos.add(JTextField_NombreDelCampo, new org.netbeans.lib.awtextra.AbsoluteConstraints(281, 113, 280, -1));
 
         JLabel_TipoDeCampo.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         JLabel_TipoDeCampo.setText("Tipo de dato del campo:");
+        JPanel_CrearCampos.add(JLabel_TipoDeCampo, new org.netbeans.lib.awtextra.AbsoluteConstraints(41, 154, 235, -1));
 
         JLabel_LlavePrimSecun.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         JLabel_LlavePrimSecun.setText("Llave primaria/Llave secundaria:");
         JLabel_LlavePrimSecun.setToolTipText("En caso no aplique a ninguna de las dos, no seleccionar");
+        JPanel_CrearCampos.add(JLabel_LlavePrimSecun, new org.netbeans.lib.awtextra.AbsoluteConstraints(41, 241, -1, 34));
 
         JLabel_TamanioCampo.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         JLabel_TamanioCampo.setText("Tamaño del campo:");
+        JPanel_CrearCampos.add(JLabel_TamanioCampo, new org.netbeans.lib.awtextra.AbsoluteConstraints(42, 198, 234, -1));
+        JPanel_CrearCampos.add(JTextField_TamanioCampo, new org.netbeans.lib.awtextra.AbsoluteConstraints(282, 201, 280, -1));
 
         JButton_CrearCampos.setText("Crear campo");
         JButton_CrearCampos.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -121,6 +135,7 @@ public class Interfaz extends javax.swing.JFrame {
                 JButton_CrearCamposMouseClicked(evt);
             }
         });
+        JPanel_CrearCampos.add(JButton_CrearCampos, new org.netbeans.lib.awtextra.AbsoluteConstraints(498, 357, -1, -1));
 
         JButton_SalirCrearCampos.setBackground(new java.awt.Color(204, 0, 0));
         JButton_SalirCrearCampos.setText("Salir");
@@ -129,86 +144,18 @@ public class Interfaz extends javax.swing.JFrame {
                 JButton_SalirCrearCamposMouseClicked(evt);
             }
         });
+        JPanel_CrearCampos.add(JButton_SalirCrearCampos, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 357, -1, -1));
 
         JRadioButton_LlavePrimaria.setText("Llave primaria");
         JRadioButton_LlavePrimaria.setToolTipText("");
+        JPanel_CrearCampos.add(JRadioButton_LlavePrimaria, new org.netbeans.lib.awtextra.AbsoluteConstraints(41, 293, 100, -1));
 
         JRadioButton_LlaveSecundaria.setText("Llave secundaria");
         JRadioButton_LlaveSecundaria.addActionListener(this::JRadioButton_LlaveSecundariaActionPerformed);
+        JPanel_CrearCampos.add(JRadioButton_LlaveSecundaria, new org.netbeans.lib.awtextra.AbsoluteConstraints(283, 293, 122, -1));
 
         JComboBox_TipoDeDatoCampo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        javax.swing.GroupLayout JPanel_CrearCamposLayout = new javax.swing.GroupLayout(JPanel_CrearCampos);
-        JPanel_CrearCampos.setLayout(JPanel_CrearCamposLayout);
-        JPanel_CrearCamposLayout.setHorizontalGroup(
-            JPanel_CrearCamposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(JPanel_CrearCamposLayout.createSequentialGroup()
-                .addGroup(JPanel_CrearCamposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(JPanel_CrearCamposLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(JLabel_TamanioCampo, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(JTextField_TamanioCampo, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, JPanel_CrearCamposLayout.createSequentialGroup()
-                        .addGap(153, 153, 153)
-                        .addComponent(JLabel_CrearCampos)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, JPanel_CrearCamposLayout.createSequentialGroup()
-                        .addGap(41, 41, 41)
-                        .addGroup(JPanel_CrearCamposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(JPanel_CrearCamposLayout.createSequentialGroup()
-                                .addComponent(JLabel_TipoDeCampo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(JComboBox_TipoDeDatoCampo, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(JPanel_CrearCamposLayout.createSequentialGroup()
-                                .addGroup(JPanel_CrearCamposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(JLabel_LlavePrimSecun)
-                                    .addGroup(JPanel_CrearCamposLayout.createSequentialGroup()
-                                        .addComponent(JLabel_NombreCampos, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(JTextField_NombreDelCampo, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(JPanel_CrearCamposLayout.createSequentialGroup()
-                                        .addComponent(JRadioButton_LlavePrimaria, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(142, 142, 142)
-                                        .addComponent(JRadioButton_LlaveSecundaria, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(0, 1, Short.MAX_VALUE)))))
-                .addContainerGap(40, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JPanel_CrearCamposLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(JButton_SalirCrearCampos)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(JButton_CrearCampos)
-                .addContainerGap())
-        );
-        JPanel_CrearCamposLayout.setVerticalGroup(
-            JPanel_CrearCamposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(JPanel_CrearCamposLayout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addComponent(JLabel_CrearCampos)
-                .addGap(37, 37, 37)
-                .addGroup(JPanel_CrearCamposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(JLabel_NombreCampos)
-                    .addComponent(JTextField_NombreDelCampo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(19, 19, 19)
-                .addGroup(JPanel_CrearCamposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(JLabel_TipoDeCampo)
-                    .addComponent(JComboBox_TipoDeDatoCampo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(JPanel_CrearCamposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(JLabel_TamanioCampo)
-                    .addComponent(JTextField_TamanioCampo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(JLabel_LlavePrimSecun, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(JPanel_CrearCamposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(JRadioButton_LlavePrimaria)
-                    .addComponent(JRadioButton_LlaveSecundaria))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
-                .addGroup(JPanel_CrearCamposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(JButton_CrearCampos)
-                    .addComponent(JButton_SalirCrearCampos))
-                .addContainerGap())
-        );
+        JPanel_CrearCampos.add(JComboBox_TipoDeDatoCampo, new org.netbeans.lib.awtextra.AbsoluteConstraints(282, 158, 280, -1));
 
         javax.swing.GroupLayout JDialog_CrearCamposLayout = new javax.swing.GroupLayout(JDialog_CrearCampos.getContentPane());
         JDialog_CrearCampos.getContentPane().setLayout(JDialog_CrearCamposLayout);
@@ -353,6 +300,7 @@ public class Interfaz extends javax.swing.JFrame {
         JMenu_Campos.add(JMenuItem_CrearCampos);
 
         JMenuItem_ListarCampos.setText("Listar campos");
+        JMenuItem_ListarCampos.addActionListener(this::JMenuItem_ListarCamposActionPerformed);
         JMenu_Campos.add(JMenuItem_ListarCampos);
 
         JMenuItem_ModificarCampos.setText("Modificar campos");
@@ -409,53 +357,91 @@ public class Interfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_JMenu_ArchivoMouseClicked
 
     private void JMenuItem_CrearArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JMenuItem_CrearArchivoActionPerformed
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Guardar archivo como...");
-        
-        // Para que solo se muestre archivos .txt y tambien los archivos creados sean .txt
-        FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivo de texto (*.txt)", "txt");
-        fileChooser.setFileFilter(filtro);
-        int seleccion = fileChooser.showSaveDialog(this);
-        
-        // solo para verificar que el usuario presiono guardar 
-        if (seleccion == JFileChooser.APPROVE_OPTION) {
-            File archivo_Seleccionado = fileChooser.getSelectedFile(); 
-            String ruta = archivo_Seleccionado.getAbsolutePath();
-            // verificar si termina en .txt
-            if (!ruta.toLowerCase().endsWith(".txt")) {
-                ruta+= ".txt";
-            }
-            File archivoFinal = new File(ruta);
-            
-            if (archivoFinal.exists()) { // si el archivo existe/ya existe
-                JOptionPane.showMessageDialog(this, "El archivo ya existe");
-                return;
-            }
-            
-            // crear el archivo
-            try {
-                try (RandomAccessFile archivo = new RandomAccessFile(archivoFinal, "rw")) {
-                    archivo.setLength(0); // archivo vacio (esta con 0 bytes)
-                }
-                JOptionPane.showMessageDialog(this, "El archivo se creo");
-            } catch (IOException e) { // en caso si hubo algun error
-                JOptionPane.showMessageDialog(this, "Hubo un error al crear archivo: " + e.getMessage());
-            }
-        } else { // en caso se decidio seleccionar "cancelar"
-            JOptionPane.showMessageDialog(this, "No se selecciono ningun archivo");
+        // Si hay un archivo abierto con cambios, preguntar antes de continuar
+        if (!cerrarArchivoActual()) return;
+ 
+        JFileChooser archi = new JFileChooser();
+        archi.setDialogTitle("Crear nuevo archivo...");
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivo de datos (*.dat)", "dat");
+        archi.setFileFilter(filtro);
+ 
+        if (archi.showSaveDialog(this) != JFileChooser.APPROVE_OPTION) {
+            JOptionPane.showMessageDialog(this, "No se seleccionó ningún archivo.");
+            return;
         }
+ 
+        // Asegurar extensión .dat
+        String ruta = archi.getSelectedFile().getAbsolutePath();
+        if (!ruta.toLowerCase().endsWith(".dat")) ruta += ".dat";
+        File archivoFinal = new File(ruta);
+ 
+        if (archivoFinal.exists()) {
+            JOptionPane.showMessageDialog(this,
+                "El archivo ya existe.\nUse 'Abrir archivo' para abrirlo.");
+            return;
+        }
+ 
+        try {
+            // Crear el archivo binario y escribir la metadata inicial (header vacío)
+            rafActual = new RandomAccessFile(archivoFinal, "rw");
+            metadataActual = new Metadata();
+            String nombreSinExt = archivoFinal.getName().replace(".dat", "");
+            metadataActual.inicializar(nombreSinExt, (byte) 0); // 0 = best fit
+            metadataActual.escribirMetadata(rafActual);
+ 
+            archivoActual = archivoFinal;
+            lista_Campos.clear();
+            haycambiosSinGuardar = false;
+            actualizarTituloVentana();
+ 
+            JOptionPane.showMessageDialog(this,
+                "Archivo creado: " + archivoFinal.getName() +
+                "\n\nAhora defina los campos desde el menú Campos.");
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this,
+                "Error al crear el archivo: " + e.getMessage());
+            cerrarRecursos();
+        }    
     }//GEN-LAST:event_JMenuItem_CrearArchivoActionPerformed
 
     private void JMenuItem_AbrirArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JMenuItem_AbrirArchivoActionPerformed
-        JFileChooser fileChooser = new JFileChooser();
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivo de texto (*.txt)", "txt");
-        fileChooser.setFileFilter(filter);
-        int estado = fileChooser.showOpenDialog(this);
-        
-        if (estado == JFileChooser.APPROVE_OPTION) {
-            File archivoSeleccionado = fileChooser.getSelectedFile();
-            
+        if (!cerrarArchivoActual()) return;
+ 
+        JFileChooser archi = new JFileChooser();
+        archi.setDialogTitle("Abrir archivo de datos...");
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivo de datos (*.dat)", "dat");
+        archi.setFileFilter(filter);
+ 
+        if (archi.showOpenDialog(this) != JFileChooser.APPROVE_OPTION) {
+            JOptionPane.showMessageDialog(this, "No se seleccionó ningún archivo.");
+            return;
         }
+ 
+        File archivoSeleccionado = archi.getSelectedFile();
+        if (!archivoSeleccionado.exists()) {
+            JOptionPane.showMessageDialog(this, "El archivo no existe.");
+            return;
+        }
+ 
+        try {
+            rafActual = new RandomAccessFile(archivoSeleccionado, "rw");
+            metadataActual = Metadata.leerMetadata(rafActual);
+            archivoActual = archivoSeleccionado;
+            haycambiosSinGuardar = false;
+ 
+            // Reconstruir lista_Campos desde la metadata leída del disco
+            sincronizarListaCampos();
+            actualizarTituloVentana();
+ 
+            JOptionPane.showMessageDialog(this,
+                "Archivo abierto: " + archivoSeleccionado.getName() +
+                "\nCampos: "           + metadataActual.getHeader().getCantidad_campos() +
+                "\nRegistros activos: " + metadataActual.getHeader().getRegistros_actives());
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this,
+                "Error al abrir el archivo: " + e.getMessage());
+            cerrarRecursos();
+        }    
     }//GEN-LAST:event_JMenuItem_AbrirArchivoActionPerformed
 
         
@@ -573,60 +559,156 @@ public class Interfaz extends javax.swing.JFrame {
 
     // Salir del JFrame (salir del programa en corto
     private void JMenuItem_SalirProgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JMenuItem_SalirProgActionPerformed
-        if (!lista_Campos.isEmpty()){ // ******Despues validar para registros tambien
-            int resp = JOptionPane.showConfirmDialog(this, "Desea guardar los cambios realizados?","Guardar cambios" ,JOptionPane.YES_NO_CANCEL_OPTION);
-            if (resp == JOptionPane.YES_OPTION) {
-                // guardar antes de cerrar 
-                // todavia no implementado el guardar
-                System.exit(0);
-            } else if (resp == JOptionPane.NO_OPTION) {
-                System.exit(0);
-            } else { 
-                System.exit(0);
-            }
+        if (cerrarArchivoActual()) {
+            System.exit(0);
         }
     }//GEN-LAST:event_JMenuItem_SalirProgActionPerformed
 
     // Guardar los cambios hechos - archivo
     private void JMenuItem_GuardarCambiosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JMenuItem_GuardarCambiosActionPerformed
-        // verificar si hay archivo abierto
-        if (archivoActual == null) {
-            JOptionPane.showMessageDialog(this, "No hay archivo");
-        }
-        
-        // guardar si hay campos - verificar si hay 
-        if (lista_Campos.isEmpty()) {
-            JOptionPane.showConfirmDialog(this, "No hay campos por guardar");
-        }
-        
+        if (!verificarArchivoAbierto()) return;
+        guardarCambios();
     }//GEN-LAST:event_JMenuItem_GuardarCambiosActionPerformed
 
     // Cerrar el archivo 
     private void JMenuItem_CerrarArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JMenuItem_CerrarArchivoActionPerformed
-        if (archivoActual == null) { // ver si hay un archivo abierto
-            JOptionPane.showMessageDialog(this, "No hay ningún archivo abierto");
-            return;
-        } 
-        
-        // verificando si hay cambios que requieran guardar
-        if (!lista_Campos.isEmpty()) {
-            int resp = JOptionPane.showConfirmDialog(this, "Hay cambios sin guardar, desea guardarlos antes de cerrar?", "Guardar cambios", JOptionPane.YES_NO_CANCEL_OPTION);
-            if (resp == JOptionPane.YES_OPTION) {
-                if (archivoActual != null) {
-                    // guardar campos - hacer un metodo para reutilizarlo en guardar archivo
-                } else {
-                    
-                }
-            } else if (resp == JOptionPane.CANCEL_OPTION){
-                return;
-            }
+        if (!verificarArchivoAbierto()) return;
+        if (cerrarArchivoActual()) {
+            JOptionPane.showMessageDialog(this, "Archivo cerrado correctamente.");
         }
-        // limpieza de variables 
-        archivoActual = null;
-        lista_Campos.clear();
-        JOptionPane.showMessageDialog(this, "Archivo cerrado");
     }//GEN-LAST:event_JMenuItem_CerrarArchivoActionPerformed
 
+    private void JMenuItem_ListarCamposActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JMenuItem_ListarCamposActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_JMenuItem_ListarCamposActionPerformed
+
+    // Verifica que haya un archivo abierto antes de cualquier operación
+    private boolean verificarArchivoAbierto() {
+        if (archivoActual == null || rafActual == null || metadataActual == null) {
+            JOptionPane.showMessageDialog(this,
+                "No hay ningún archivo abierto.\n" +
+                "Use Archivos → Crear archivo  o  Archivos → Abrir archivo.");
+            return false;
+        }
+        return true;
+    }
+ 
+    // Guarda la metadata completa en disco
+    private boolean guardarCambios() {
+        if (rafActual == null || metadataActual == null) return false;
+        try {
+            metadataActual.escribirMetadata(rafActual);
+            haycambiosSinGuardar = false;
+            actualizarTituloVentana();
+            JOptionPane.showMessageDialog(this, "Cambios guardados correctamente.");
+            return true;
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this,
+                "Error al guardar: " + e.getMessage());
+            return false;
+        }
+    }
+ 
+    // Pregunta si guardar, cierra el archivo. Retorna false si el usuario canceló.
+    private boolean cerrarArchivoActual() {
+        if (archivoActual == null) return true; // ya cerrado, OK
+ 
+        if (haycambiosSinGuardar) {
+            int resp = JOptionPane.showConfirmDialog(this,
+                "Hay cambios sin guardar en '" + archivoActual.getName() + "'.\n" +
+                "¿Desea guardarlos?",
+                "Guardar cambios",
+                JOptionPane.YES_NO_CANCEL_OPTION);
+ 
+            if (resp == JOptionPane.YES_OPTION) {
+                if (!guardarCambios()) return false;
+            } else if (resp == JOptionPane.CANCEL_OPTION
+                    || resp == JOptionPane.CLOSED_OPTION) {
+                return false; // usuario canceló
+            }
+            // NO_OPTION: continuar sin guardar
+        }
+        cerrarRecursos();
+        return true;
+    }
+ 
+    // Cierra el RandomAccessFile y limpia todas las variables de estado
+    private void cerrarRecursos() {
+        try {
+            if (rafActual != null) rafActual.close();
+        } catch (IOException ignored) {
+        } finally {
+            rafActual            = null;
+            metadataActual       = null;
+            archivoActual        = null;
+            haycambiosSinGuardar = false;
+            lista_Campos.clear();
+            actualizarTituloVentana();
+        }
+    }
+ 
+    // Al abrir un archivo existente: reconstruye lista_Campos desde la metadata
+    private void sincronizarListaCampos() {
+        lista_Campos.clear();
+        DescriptorCampos[] tabla = metadataActual.getTablaCampos();
+        if (tabla == null) return;
+        for (DescriptorCampos dc : tabla) {
+            lista_Campos.add(new Campos(
+                dc.getNombre_campo(),
+                dc.getTipo(),
+                String.valueOf(dc.getTamanio_max()),
+                dc.getLlave_primaria()   == 1,
+                dc.getLlave_secundaria() == 1
+            ));
+        }
+    }
+ 
+    // Limpia el formulario del diálogo Crear Campos para una nueva entrada
+    private void limpiarFormularioCampo() {
+        JTextField_NombreDelCampo.setText("");
+        JTextField_TamanioCampo.setText("");
+        JTextField_TamanioCampo.setEnabled(true);
+        JComboBox_TipoDeDatoCampo.setSelectedIndex(0);
+        JRadioButton_LlavePrimaria.setSelected(false);
+        JRadioButton_LlaveSecundaria.setSelected(false);
+    }
+ 
+    // Actualiza el título de la ventana con el nombre del archivo activo
+    private void actualizarTituloVentana() {
+        if (archivoActual != null) {
+            String marca = haycambiosSinGuardar ? " *" : "";
+            this.setTitle("Mini DBMS — " + archivoActual.getName() + marca);
+        } else {
+            this.setTitle("Mini DBMS — Sin archivo abierto");
+        }
+    }
+ 
+    // Carga la JTable del diálogo Listar Campos con los campos actuales
+    // Llama este método ANTES de abrir JDialog_ListarCampos
+    private void cargarTablaCampos() {
+        String[] tipos = {"int", "float", "boolean", "char", "string"};
+        String[] columnas = {"#", "Nombre", "Tipo", "Tamaño", "L.Primaria", "L.Secundaria"};
+ 
+        Object[][] datos = new Object[lista_Campos.size()][6];
+        for (int i = 0; i < lista_Campos.size(); i++) {
+            Campos c = lista_Campos.get(i);
+            datos[i][0] = i + 1;
+            datos[i][1] = c.getNombre();
+            datos[i][2] = (c.getTipoDato() >= 0 && c.getTipoDato() < tipos.length)
+                          ? tipos[c.getTipoDato()] : "?";
+            datos[i][3] = c.getTamanio();
+            datos[i][4] = c.isLlavePrimaria()  ? "Sí" : "No";
+            datos[i][5] = c.isLlaveSecundaria() ? "Sí" : "No";
+        }
+ 
+        JTable_ListaDeCampos.setModel(
+            new javax.swing.table.DefaultTableModel(datos, columnas) {
+                @Override
+                public boolean isCellEditable(int row, int col) { return false; }
+            }
+        );
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -705,4 +787,7 @@ public class Interfaz extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
+    private Metadata metadataActual;       // metadata activa del archivo
+    private RandomAccessFile rafActual;    // conexión binaria al archivo
+    private boolean haycambiosSinGuardar;  // bandera de cambios pendientes
 }
